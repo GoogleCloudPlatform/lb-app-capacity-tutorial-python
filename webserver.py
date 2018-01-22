@@ -64,13 +64,13 @@ class MyHandler(BaseHTTPRequestHandler):
           extent=(self.X.min(), self.X.max(), self.Y.min(), self.Y.max()))
       xlabel("Re(c)")
       ylabel("Im(c)")
+      self.send_response(200)
+      self.send_header("Content-Type", "image/png")
+      self.end_headers()
+      # Send image as response
       with BytesIO() as buffer:
         savefig(buffer, format="png")
-        #send image as response
-        self.send_response(200)
-        self.send_header("Content-Type", "image/png")
-      self.end_headers()
-      self.wfile.write(buffer.getvalue())
+        self.wfile.write(buffer.getvalue())
     # On health check send an empty response
     elif self.path == "/health-check":
       self.send_response(200)
